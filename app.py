@@ -152,7 +152,7 @@ def app():
     elif page == "Twitter User Wordcloud":
         st.header("Twitter Utilities - Get User Wordcloud")
         twitter_name = st.text_input(
-            "Enter Twitter screen name to get wordcloud of user's recent posts.")
+            "Enter Twitter screen name to get wordcloud of user's recent posts")
         if twitter_name:
             tweets = api.user_timeline(screen_name=twitter_name)
             for tweet in tweets:
