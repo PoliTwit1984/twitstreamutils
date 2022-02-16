@@ -90,7 +90,7 @@ def app():
     if page == "Twitter User Information":
         st.header("Twitter Utilities - Get User Info")
         twitter_user = st.text_input(
-            "Enter Twitter screen name to get information about Twitter user."
+            "Enter Twitter screenname to get information about Twitter user."
         )
         if twitter_user:
             user = api.get_user(screen_name=twitter_user)
