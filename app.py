@@ -7,9 +7,15 @@ from nltk.tokenize import word_tokenize
 from wordcloud import WordCloud, STOPWORDS
 import tweepy
 import string
+import pyodbc
+import config
+import textwrap
+import pandas as pd
+
 
 nltk.download("stopwords")
 nltk.download("punkt")
+
 
 def clean_text(text):
 
@@ -24,13 +30,16 @@ def clean_text(text):
 
     return cleaned_text.strip()
 
+
 def remove_whitespace(text):
 
     return " ".join(text.split())
 
+
 def makeitastring(wannabestring):
     convertedstring = ",".join(map(str, wannabestring))
     return convertedstring
+
 
 auth = tweepy.OAuthHandler(st.secrets["consumer_key"],
                            st.secrets["consumer_secret"])
@@ -50,7 +59,7 @@ def app():
     st.set_option('deprecation.showPyplotGlobalUse', False)
 
     morewords = [
-        "moleg", 
+        "moleg",
         "Missouri",
         "make",
         "whatever",
@@ -84,8 +93,41 @@ def app():
     stopwords_ls = [clean_text(word) for word in stopwords_ls]
     st.sidebar.title("Politwit1984 Twitter Tools")
     page = st.sidebar.selectbox(
-        "Select Tool", ["Twitter User Information", "Twitter User Wordcloud", "Twitter User Liked Posts WordCloud", "Twitter Lists a User Belongs"])
+        "Select Tool", ["Twitter User Information", "Twitter User Wordcloud", "Twitter User Liked Posts WordCloud", "Twitter Lists a User Belongs", "Twitter database tools"])
     st.title("Politwit1984 Twitter Analytic Tools")
+
+    driver = "{ODBC Driver 17 for SQL Server}"
+    server_name = "twitpoli1984-sqlsrv"
+    database_name = "mosenatetweets-db"
+    server = "{server_name}.database.windows.net,1433".format(
+        server_name=server_name)
+    username = config.username
+    password = config.password
+
+    connection_string = textwrap.dedent(
+        """
+        Driver={driver};
+        Server={server};
+        Database={database};
+        Uid={username};
+        Pwd={password};
+        Encrypt=yes;
+        TrustServerCertificate=no;
+        Connection Timeout=30;
+    """.format(
+            driver=driver,
+            server=server,
+            database=database_name,
+            username=username,
+            password=password,
+        )
+    )
+
+    cnxn: pyodbc.Connection = pyodbc.connect(connection_string)
+    crsr: pyodbc.Cursor = cnxn.cursor()
+    #crsr.execute('SELECT * FROM table_name')
+
+    df = pd.read_sql_query('SELECT * FROM TWEET_ALL_UP', cnxn)
 
     if page == "Twitter User Information":
         st.header("Twitter Utilities - Get User Info")
@@ -148,9 +190,8 @@ def app():
             username = twitter_handle
             userinfo = api.get_user(screen_name=username)
             user_id = userinfo.id
-        
-            response = client.get_liked_tweets(id=user_id, max_results=100)
 
+            response = client.get_liked_tweets(id=user_id, max_results=100)
 
             tweets = response.data
             metadata = response.meta
@@ -188,6 +229,20 @@ def app():
             response = client.get_list_memberships(user_id)
             for x in response.data:
                 st.write(x.name, ('https://twitter.com/i/lists/'+str(x.id)))
+
+    elif page == "Twitter database tools":
+        st.header("Twitter database analysis")
+
+        st.bar_chart(df['tweet_source'].value_counts(),
+                     use_container_width=True)
+
+    
+
+        st.bar_chart(df['tweet_reference_type'].value_counts(),
+                     use_container_width=True)
+
+        st.bar_chart(df[['tweet_user_following_count']],
+                     use_container_width=True)
 
 
 if __name__ == "__main__":
