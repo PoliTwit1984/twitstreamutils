@@ -104,8 +104,7 @@ def app():
     database_name = "mosenatetweets-db"
     server = "{server_name}.database.windows.net,1433".format(
         server_name=server_name)
-    username = config.username
-    password = config.password
+
 
     connection_string = textwrap.dedent(
         """
