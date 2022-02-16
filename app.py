@@ -7,10 +7,10 @@ from nltk.tokenize import word_tokenize
 from wordcloud import WordCloud, STOPWORDS
 import tweepy
 import string
-import pyodbc
 import config
 import textwrap
 import pandas as pd
+import pyodbc
 
 
 nltk.download("stopwords")

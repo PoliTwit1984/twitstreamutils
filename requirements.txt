@@ -70,6 +70,7 @@ pycparser==2.21
 pydeck==0.7.1
 Pygments==2.11.2
 Pympler==1.0.1
+pyodbc==4.0.32
 pyparsing==3.0.7
 pyrsistent==0.18.1
 python-dateutil==2.8.2
