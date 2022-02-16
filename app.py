@@ -1,5 +1,4 @@
 import streamlit as st
-import preprocessor as p
 import matplotlib.pyplot as plt
 import re
 from nltk.corpus import stopwords
@@ -44,15 +43,6 @@ def clean_text(text):
 def remove_whitespace(text):
 
     return " ".join(text.split())
-
-def clean_tweets(tweet_text):
-
-    p.set_options(p.OPT.URL, p.OPT.MENTION, p.OPT.EMOJI)
-    clean_tweet_text = p.clean(tweet_text)
-    clean_tweet_text = clean_tweet_text.replace("&amp", "")
-    clean_tweet_text = clean_tweet_text.replace("\\n", "").replace("'", "")
-
-    return clean_tweet_text
 
 def makeitastring(wannabestring):
     convertedstring = ",".join(map(str, wannabestring))
