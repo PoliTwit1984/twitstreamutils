@@ -116,8 +116,7 @@ def app():
         if twitter_name:
             tweets = api.user_timeline(screen_name=twitter_name)
             for tweet in tweets:
-                tweet_clean_text = clean_tweets(tweet.text)
-                tweet_clean_text = clean_text(tweet_clean_text)
+                tweet_clean_text = clean_text(tweet.text)
                 words = word_tokenize(tweet_clean_text)
                 wordsFiltered = []
                 for w in words:
@@ -161,7 +160,7 @@ def app():
 
                 tweet_text = tweet.text
 
-                tweet_clean_text = clean_tweets(tweet.text)
+                tweet_clean_text = clean_text(tweet.text)
                 tweet_created_at = tweet.created_at
                 liked_tweets.append(tweet_clean_text)
 
