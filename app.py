@@ -12,21 +12,6 @@ import string
 nltk.download("stopwords")
 nltk.download("punkt")
 
-# URL	            p.OPT.URL
-# Mention	        p.OPT.MENTION
-# Hashtag	        p.OPT.HASHTAG
-# Reserved Words	p.OPT.RESERVED
-# Emoji	            p.OPT.EMOJI
-# Smiley	        p.OPT.SMILEY
-# Number	        p.OPT.NUMBER
-
-
-def getusername(id):
-    client = tweepy.Client(bearer_token=config.bearer_token)
-    response = client.get_user(id ='1604949372')
-
-
-
 def clean_text(text):
 
     # convert to lower case
@@ -207,15 +192,6 @@ def app():
             response = client.get_list_memberships(user_id)
             for x in response.data:
                 st.write(x.name, ('https://twitter.com/i/lists/'+str(x.id)))
-
-
-
-
-
-
-#Client.get_list_memberships(id, *, expansions, list_fields, max_results, pagination_token, user_fields, user_auth=False)
-
-# https://twitter.com/i/lists/1467207384011526144
 
 
 if __name__ == "__main__":
