@@ -86,13 +86,13 @@ def app():
     stopwords_ls = [clean_text(word) for word in stopwords_ls]
     st.sidebar.title("Politwit1984 Twitter Tools")
     page = st.sidebar.selectbox(
-        "Select Tool", ["Twitter User Information", "Twitter User Wordcloud", "Twitter User Liked Posts WordCloud", "Twitter Lists I belong to"])
+        "Select Tool", ["Twitter User Information", "Twitter User Wordcloud", "Twitter User Liked Posts WordCloud", "Twitter Lists a User Belongs"])
     st.title("Politwit1984 Twitter Analytic Tools")
 
     if page == "Twitter User Information":
         st.header("Twitter Utilities - Get User Info")
         twitter_user = st.text_input(
-            "Enter Twitter user name without the @ to get information about Twitter user."
+            "Enter Twitter screen_name to get information about Twitter user."
         )
         if twitter_user:
             user = api.get_user(screen_name=twitter_user)
@@ -112,7 +112,7 @@ def app():
     elif page == "Twitter User Wordcloud":
         st.header("Twitter Utilities - Get User Wordcloud")
         twitter_name = st.text_input(
-            "Enter Twitter ID to get Wordcloud of last 100+ tweets.")
+            "Enter Twitter screen name to get wordcloud of user's recent posts.")
         if twitter_name:
             tweets = api.user_timeline(screen_name=twitter_name)
             for tweet in tweets:
@@ -145,7 +145,7 @@ def app():
         st.set_option('deprecation.showPyplotGlobalUse', False)
         st.header("Twitter Utilities - Get user liked posts ")
         twitter_handle = st.text_input(
-            "Enter Twitter name to get tweets liked by the user user and print WordCloud.")
+            "Enter Twitter screen name to get tweets liked by the user user and print WordCloud.")
         if twitter_handle:
             username = twitter_handle
             userinfo = api.get_user(screen_name=username)
@@ -179,11 +179,11 @@ def app():
                 plt.show()
                 st.pyplot()
 
-    elif page == "Twitter Lists I belong to":
+    elif page == "Twitter Lists a User Belongs":
         st.set_option('deprecation.showPyplotGlobalUse', False)
         st.header("Twitter Utilities - Get memberships")
         twitter_username = st.text_input(
-            "Enter screen name to get list of Twitter list memberships")
+            "Enter screen name to get list of Twitter list memberships.")
         if twitter_username:
             userinfo = api.get_user(screen_name=twitter_username)
             user_id = userinfo.id
