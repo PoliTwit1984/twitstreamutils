@@ -4,7 +4,6 @@ import re
 from nltk.corpus import stopwords
 import nltk
 from nltk.tokenize import word_tokenize
-import matplotlib.pyplot as plt
 from wordcloud import WordCloud, STOPWORDS
 import tweepy
 import string
