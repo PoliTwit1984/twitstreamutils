@@ -52,6 +52,10 @@ api = tweepy.API(auth)
 client = tweepy.Client(bearer_token=st.secrets["bearer_token"])
 client2 = tweepy.Client(bearer_token=st.secrets["bearer_token"])
 
+password = st.secrets["password"]
+username = st.secrets["username"]
+
+
 tweet_list = []
 
 
