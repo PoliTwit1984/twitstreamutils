@@ -120,8 +120,8 @@ def app():
             driver=driver,
             server=server,
             database=database_name,
-            username=username,
-            password=password,
+            username=st.secrets['username'],
+            password=st.secrets['password']
         )
     )
 
