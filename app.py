@@ -7,7 +7,6 @@ from nltk.tokenize import word_tokenize
 from wordcloud import WordCloud, STOPWORDS
 import tweepy
 import string
-import config
 import textwrap
 import pandas as pd
 import pyodbc
