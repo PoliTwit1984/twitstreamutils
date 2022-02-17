@@ -105,7 +105,6 @@ def app():
     server = "{server_name}.database.windows.net,1433".format(
         server_name=server_name)
 
-
     connection_string = textwrap.dedent(
         """
         Driver={driver};
@@ -238,15 +237,14 @@ def app():
         st.bar_chart(df['tweet_source'].value_counts(),
                      use_container_width=True)
 
-    
-
         st.bar_chart(df['tweet_reference_type'].value_counts(),
                      use_container_width=True)
 
         st.bar_chart(df[['tweet_user_following_count']],
                      use_container_width=True)
 
-        st.bar_chart(df['tweet_sentiment_label'].value_counts(), use_container_width=True)
+        st.bar_chart(df['tweet_sentiment_label'].value_counts(),
+                     use_container_width=True)
 
 
 if __name__ == "__main__":
