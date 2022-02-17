@@ -246,7 +246,7 @@ def app():
         st.bar_chart(df[['tweet_user_following_count']],
                      use_container_width=True)
 
-        st.bar_chart(df['tweet_sentiment_label'].value_counts(), ['tweet_source'].pd.value_counts())
+        st.bar_chart(df['tweet_sentiment_label'].value_counts(), use_container_width=True)
 
 
 if __name__ == "__main__":
