@@ -10,7 +10,7 @@ import string
 import textwrap
 import pandas as pd
 import pyodbc
-
+import altair as alt
 
 nltk.download("stopwords")
 nltk.download("punkt")
@@ -245,6 +245,43 @@ def app():
 
         st.bar_chart(df['tweet_sentiment_label'].value_counts(),
                      use_container_width=True)
+
+        print('hi')
+
+        # c = alt.Chart(df).mark_bar().encode(
+        # alt.Y('tweet_source'),
+        # alt.X('count(kind):Q')
+
+        c = alt.Chart(df).mark_bar().encode(
+            alt.Y('tweet_source'), 
+            alt.X('count(tweet_source):Q'))
+        st.altair_chart(c, use_container_width=True)
+
+
+
+        e = alt.Chart(df).mark_bar().encode(
+        x='tweet_source', 
+        y ='count()',
+        color='tweet_sentiment_label').interactive()
+        st.altair_chart(e, use_container_width=True)
+
+        f= alt.Chart(df).mark_bar().encode(
+        x=alt.X('tweet_source', sort='-y'),
+        y ='count()',
+        color='tweet_sentiment_label'
+        )
+        st.altair_chart(f, use_container_width=True)
+
+
+
+
+
+
+
+
+
+
+
 
 
 if __name__ == "__main__":
