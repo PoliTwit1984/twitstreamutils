@@ -9,7 +9,7 @@ import tweepy
 import string
 import textwrap
 import pandas as pd
-import pyodbc
+#import pyodbc
 import altair as alt
 
 nltk.download("stopwords")
