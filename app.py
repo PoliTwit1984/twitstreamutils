@@ -272,6 +272,29 @@ def app():
         )
         st.altair_chart(f, use_container_width=True)
 
+        g = alt.Chart(df).mark_circle(size=60).encode(
+        x='tweet_user_following_count',
+        y='tweet_user_followers_count',
+        color='tweet_source',
+        size='tweet_user_followers_count',
+        tooltip=["tweet_username", "tweet_user_following_count", "tweet_user_followers_count", 'tweet_source']
+        ).interactive()
+
+        st.altair_chart(g, use_container_width=True)
+
+
+        h = alt.Chart(df).mark_circle(size=60).encode(
+        x='tweet_retweet_count',
+        y='tweet_user_followers_count',
+        tooltip=["tweet_username"]
+  
+        ).interactive()
+
+    
+        st.altair_chart(h, use_container_width=True)
+
+
+
 
 
 
