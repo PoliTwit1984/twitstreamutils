@@ -96,7 +96,7 @@ def app():
     stopwords_ls = [clean_text(word) for word in stopwords_ls]
     st.sidebar.title("Politwit1984 Twitter Tools")
     page = st.sidebar.selectbox(
-        "Select Tool", ["Twitter User Information", "Twitter User Wordcloud", "Twitter User Liked Posts WordCloud", "Twitter Lists a User Belongs", "Twitter database tools"])
+        "Select Tool", ["Twitter User Information", "Twitter User Wordcloud", "Twitter User Liked Posts WordCloud", "Twitter Lists a User Belongs", "Twitter database tools", "Compare two users with a WordCloud"])
     st.title("Politwit1984 Twitter Analytic Tools")
 
     driver = "{ODBC Driver 17 for SQL Server}"
@@ -289,7 +289,30 @@ def app():
         ).interactive()
 
     
-        st.altair_chart(h, use_container_width=True)
+    if page == "Compare two users with a WordCloud":
+        st.header("Let's compare to Twitter Users with a WordCloud...")
+        twitter_user1 = st.text_input(
+            "Enter Twitter screenname of first user."
+        )
+
+        twitter_user2 = st.text_input(
+            "Enter Twitter screenname of second user."
+        )
+        if twitter_user:
+            user = api.get_user(screen_name=twitter_user)
+            st.write("User Twitter screen name: ", user.screen_name)
+            st.write("User Name: ", user.name)
+            st.write("User Description: ", user.description)
+            st.write("User location: ", user.location)
+            st.write("User created on: ", user.created_at)
+            st.write("User Tweets: ", user.statuses_count)
+            st.write("User liked tweets: ", user.favourites_count)
+            st.write("User followers count: ", user.followers_count)
+            st.write("User following count: ", user.friends_count)
+            st.write("User geo-enabled: ", user.geo_enabled)
+            st.write("User Twitter ID: ", user.id)
+            st.write("User list memberships: ", user.listed_count)
+
 
 
 
