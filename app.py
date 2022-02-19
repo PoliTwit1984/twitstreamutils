@@ -284,14 +284,15 @@ def app():
 
 
         h = alt.Chart(df).mark_circle(size=60).encode(
-        x='tweet_retweet_count',
-        y='tweet_user_followers_count',
-        tooltip=["tweet_username"]
-  
+        x=alt.Y('tweet_retweet_count', sort='tweet_retweet_count'),
+        y='tweet_user_followers_count',          
         ).interactive()
 
     
         st.altair_chart(h, use_container_width=True)
+
+
+
 
 
 
