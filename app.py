@@ -326,7 +326,7 @@ def app():
                     total_score), delta=(score))
 
                 st.metric(
-                    label="Number of Tweets mentioning Trump since you started warching.", value=t)
+                    label="Number of Tweets mentioning Trump since you started watching.", value=t)
 
                 i = 0
                 o = o + 1
