@@ -322,10 +322,11 @@ def app():
                 # create three columns
 
                 # fill in those three columns with respective metrics or KPIs
-                st.metric(label="Realtime Trump Twitter Sentiment (the lower the number the lower the sentiment)", value=(
+                st.metric(label="Realtime Trump Twitter Sentiment (the lower the number the lower the sentiment).", value=(
                     total_score), delta=(score))
 
-                st.metric(label="Number of Tweets mentioning Trump", value=t)
+                st.metric(
+                    label="Number of Tweets mentioning Trump since you started warching.", value=t)
 
                 i = 0
                 o = o + 1
