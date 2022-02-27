@@ -11,6 +11,9 @@ import textwrap
 import pandas as pd
 import pyodbc
 import altair as alt
+import textwrap
+import time
+
 
 nltk.download("stopwords")
 nltk.download("punkt")
@@ -253,82 +256,81 @@ def app():
         # alt.X('count(kind):Q')
 
         c = alt.Chart(df).mark_bar().encode(
-            alt.Y('tweet_source'), 
+            alt.Y('tweet_source'),
             alt.X('count(tweet_source):Q'))
         st.altair_chart(c, use_container_width=True)
 
-
-
         e = alt.Chart(df).mark_bar().encode(
-        x='tweet_source', 
-        y ='count()',
-        color='tweet_sentiment_label').interactive()
+            x='tweet_source',
+            y='count()',
+            color='tweet_sentiment_label').interactive()
         st.altair_chart(e, use_container_width=True)
 
-        f= alt.Chart(df).mark_bar().encode(
-        x=alt.X('tweet_source', sort='-y'),
-        y ='count()',
-        color='tweet_sentiment_label'
+        f = alt.Chart(df).mark_bar().encode(
+            x=alt.X('tweet_source', sort='-y'),
+            y='count()',
+            color='tweet_sentiment_label'
         )
         st.altair_chart(f, use_container_width=True)
 
         g = alt.Chart(df).mark_circle(size=60).encode(
-        x='tweet_user_following_count',
-        y='tweet_user_followers_count',
-        color='tweet_source',
-        size='tweet_user_followers_count',
-        tooltip=["tweet_username", "tweet_user_following_count", "tweet_user_followers_count", 'tweet_source']
+            x='tweet_user_following_count',
+            y='tweet_user_followers_count',
+            color='tweet_source',
+            size='tweet_user_followers_count',
+            tooltip=["tweet_username", "tweet_user_following_count",
+                     "tweet_user_followers_count", 'tweet_source']
         ).interactive()
 
         st.altair_chart(g, use_container_width=True)
 
-
         h = alt.Chart(df).mark_circle(size=60).encode(
-        x=alt.Y('tweet_retweet_count', sort='tweet_retweet_count'),
-        y='tweet_user_followers_count',          
+            x=alt.Y('tweet_retweet_count', scale=alt.Scale(
+                type='log', base=10, domain=(100, 1000))),
+            y='tweet_user_followers_count', scale=alt.Scale(domain=(100, 1000)),
         ).interactive()
 
-    
-    if page == "Compare two users with a WordCloud":
-        st.header("Let's compare to Twitter Users with a WordCloud...")
-        twitter_user1 = st.text_input(
-            "Enter Twitter screenname of first user."
-        )
+    elif page == "Compare two users with a WordCloud":
+        row_count = crsr.rowcount
+        print(row_count)
 
-        twitter_user2 = st.text_input(
-            "Enter Twitter screenname of second user."
-        )
-        if twitter_user:
-            user = api.get_user(screen_name=twitter_user)
-            st.write("User Twitter screen name: ", user.screen_name)
-            st.write("User Name: ", user.name)
-            st.write("User Description: ", user.description)
-            st.write("User location: ", user.location)
-            st.write("User created on: ", user.created_at)
-            st.write("User Tweets: ", user.statuses_count)
-            st.write("User liked tweets: ", user.favourites_count)
-            st.write("User followers count: ", user.followers_count)
-            st.write("User following count: ", user.friends_count)
-            st.write("User geo-enabled: ", user.geo_enabled)
-            st.write("User Twitter ID: ", user.id)
-            st.write("User list memberships: ", user.listed_count)
+        placeholder = st.empty()
 
+        crsr.execute("SELECT COUNT(*) FROM realtimetest")
+        total = crsr.fetchall()
 
+        total_score = 0
+        i = 0
+        o = (int(makeitastring(total[0])))
+        o = o - 10
+        while i < 1:
+            crsr.execute(
+                "SELECT tweet_score FROM realtimetest ORDER BY tweet_created_at OFFSET "
+                + str(o)
+                + " ROWS FETCH NEXT 1 ROWS ONLY"
+            )
+            results = crsr.fetchall()
 
+            score = results[0]
+            score = makeitastring((score))
+            score = float(score)
+            total_score = total_score + score
 
+            with placeholder.container():
+                # create three columns
 
+                # fill in those three columns with respective metrics or KPIs
+                st.metric(label="Realtime Trump Twitter Sentiment (the lower the number the lower the sentiment)", value=(
+                    total_score), delta=(score))
+                st.write(int(makeitastring(total[0])))
 
+                i = 0
+                o = o + 1
+            # time.sleep(.3)
 
+            # total_score = total_score + float(results)
 
-
-
-
-
-
-
-
-
-
+        #row_count = crsr.rowcount
 
 
 if __name__ == "__main__":
