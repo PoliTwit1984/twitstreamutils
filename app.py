@@ -291,6 +291,7 @@ def app():
         ).interactive()
 
     elif page == "Real time Trump Sentiment":
+        time.sleep(1)
         row_count = crsr.rowcount
         print(row_count)
 
