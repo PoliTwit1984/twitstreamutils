@@ -99,7 +99,7 @@ def app():
     stopwords_ls = [clean_text(word) for word in stopwords_ls]
     st.sidebar.title("Politwit1984 Twitter Tools")
     page = st.sidebar.selectbox(
-        "Select Tool", ["Twitter User Information", "Twitter User Wordcloud", "Twitter User Liked Posts WordCloud", "Twitter Lists a User Belongs", "Twitter database tools", "Compare two users with a WordCloud"])
+        "Select Tool", ["Twitter User Information", "Twitter User Wordcloud", "Twitter User Liked Posts WordCloud", "Twitter Lists a User Belongs", "Twitter database tools", "Real time Trump Sentiment"])
     st.title("Politwit1984 Twitter Analytic Tools")
 
     driver = "{ODBC Driver 17 for SQL Server}"
@@ -290,7 +290,7 @@ def app():
             y='tweet_user_followers_count', scale=alt.Scale(domain=(100, 1000)),
         ).interactive()
 
-    elif page == "Compare two users with a WordCloud":
+    elif page == "Real time Trump Sentiment":
         row_count = crsr.rowcount
         print(row_count)
 
