@@ -291,7 +291,7 @@ def app():
         ).interactive()
 
     elif page == "Real time Trump Sentiment":
-        time.sleep(1)
+
         row_count = crsr.rowcount
         print(row_count)
 
@@ -324,7 +324,6 @@ def app():
                 # fill in those three columns with respective metrics or KPIs
                 st.metric(label="Realtime Trump Twitter Sentiment (the lower the number the lower the sentiment)", value=(
                     total_score), delta=(score))
-                st.write(int(makeitastring(total[0])))
 
                 st.metric(label="Number of Tweets mentioning Trump", value=t)
 
