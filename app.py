@@ -304,6 +304,7 @@ def app():
         i = 0
         o = (int(makeitastring(total[0])))
         o = o - 10
+        t = 1
         while i < 1:
             crsr.execute(
                 "SELECT tweet_score FROM realtimetest ORDER BY tweet_created_at OFFSET "
@@ -325,8 +326,11 @@ def app():
                     total_score), delta=(score))
                 st.write(int(makeitastring(total[0])))
 
+                st.metric(label="Number of Tweets mentioning Trump", value=t)
+
                 i = 0
                 o = o + 1
+                t = t+1
             # time.sleep(.3)
 
             # total_score = total_score + float(results)
