@@ -361,7 +361,7 @@ def app():
 
             if w == 50:
                 w = 0
-                tweet_list[40:50]
+                tweet_list = tweet_list[40:50]
 
             with placeholder.container():
                 cloud = WordCloud(
