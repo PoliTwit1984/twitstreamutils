@@ -294,11 +294,9 @@ def app():
         ).interactive()
 
     elif page == "Real time Trump Sentiment":
-         st.header("Real time Biden Sentiment")
-
+        st.header("Real time Biden Sentiment")
         crsr.execute("SELECT COUNT(*) FROM realtimetest")
         total = crsr.fetchall()
-
         total_score = 0
         i = 0
         o = (int(makeitastring(total[0])))
