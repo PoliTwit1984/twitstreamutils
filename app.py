@@ -367,9 +367,9 @@ def app():
                 t = t+1
 
     elif page == "Real time WordCloud":
-        row_count = crsr.rowcount
+        #row_count = crsr.rowcount
 
-        placeholder = st.empty()
+        #placeholder = st.empty()
 
         crsr.execute("SELECT COUNT(*) FROM realtimetest")
         total = crsr.fetchall()
