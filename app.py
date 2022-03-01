@@ -295,8 +295,6 @@ def app():
 
     elif page == "Real time Trump Sentiment":
 
-        placeholder = st.empty()
-
         crsr.execute("SELECT COUNT(*) FROM realtimetest")
         total = crsr.fetchall()
 
@@ -306,6 +304,7 @@ def app():
         o = o - 10
         t = 1
         w = 0
+        placeholder = st.empty()
         while i < 1:
             crsr.execute(
                 "SELECT tweet_score FROM realtimetest ORDER BY tweet_created_at OFFSET "
