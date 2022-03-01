@@ -320,9 +320,6 @@ def app():
 
             with placeholder.container():
 
-                # create three columns
-
-                # fill in those three columns with respective metrics or KPIs
                 st.metric(label="Realtime Trump Twitter Sentiment (the lower the number the lower the sentiment).", value=(
                     total_score), delta=(score))
 
@@ -335,6 +332,7 @@ def app():
                 t = t+1
 
     elif page == "Real time WordCloud":
+        st.header("Real time Biden WordCloud")
 
         crsr.execute("SELECT COUNT(*) FROM realtimetest")
         total = crsr.fetchall()
