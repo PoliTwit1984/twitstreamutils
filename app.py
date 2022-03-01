@@ -295,14 +295,11 @@ def app():
 
     elif page == "Real time Trump Sentiment":
 
-        row_count = crsr.rowcount
-
         placeholder = st.empty()
 
         crsr.execute("SELECT COUNT(*) FROM realtimetest")
         total = crsr.fetchall()
 
-        tweet_list = []
         total_score = 0
         i = 0
         o = (int(makeitastring(total[0])))
