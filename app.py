@@ -316,19 +316,6 @@ def app():
                 + " ROWS FETCH NEXT 1 ROWS ONLY"
             )
             results = crsr.fetchall()
-            crsr.execute(
-                "SELECT tweet_text FROM realtimetest ORDER BY tweet_created_at OFFSET "
-                + str(o)
-                + " ROWS FETCH NEXT 1 ROWS ONLY"
-            )
-            results2 = crsr.fetchall()
-            tweet_list.append(results2[0])
-            data = makeitastring(tweet_list)
-
-            if w == 50:
-                w = 0
-                tweet_list[40:50]
-
             score = results[0]
             score = makeitastring((score))
             score = float(score)
@@ -344,22 +331,6 @@ def app():
 
                 st.metric(
                     label="Number of Tweets mentioning Trump since you started watching.", value=t)
-
-                st.set_option('deprecation.showPyplotGlobalUse', False)
-
-                st.write(results2[0])
-                cloud = WordCloud(
-                    scale=3,
-                    max_words=150,
-                    colormap="RdYlGn",
-                    background_color="black",
-                    stopwords=STOPWORDS,
-                    collocations=True,
-                ).generate_from_text(data)
-                plt.figure(figsize=(10, 8))
-                plt.imshow(cloud)
-                plt.axis("off")
-                st.pyplot()
 
                 w = w + 1
                 i = 0
