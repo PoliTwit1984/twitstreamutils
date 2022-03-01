@@ -12,7 +12,6 @@ import pandas as pd
 import pyodbc
 import altair as alt
 import textwrap
-import time
 
 
 nltk.download("stopwords")
@@ -22,7 +21,7 @@ nltk.download("punkt")
 def clean_text(text):
 
     # convert to lower case
-    cleaned_text = text.lower()
+    cleaned_text = text
     # remove HTML tags
     html_pattern = re.compile("<.*?>")
     cleaned_text = re.sub(html_pattern, "", cleaned_text)
@@ -99,7 +98,7 @@ def app():
     stopwords_ls = [clean_text(word) for word in stopwords_ls]
     st.sidebar.title("Politwit1984 Twitter Tools")
     page = st.sidebar.selectbox(
-        "Select Tool", ["Twitter User Information", "Twitter User Wordcloud", "Twitter User Liked Posts WordCloud", "Twitter Lists a User Belongs", "Twitter database tools", "Real time Trump Sentiment"])
+        "Select Tool", ["Twitter User Information", "Twitter User Wordcloud", "Twitter User Liked Posts WordCloud", "Twitter Lists a User Belongs", "Twitter database tools", "Real time Trump Sentiment", "Real time WordCloud"])
     st.title("Politwit1984 Twitter Analytic Tools")
 
     driver = "{ODBC Driver 17 for SQL Server}"
@@ -293,18 +292,19 @@ def app():
     elif page == "Real time Trump Sentiment":
 
         row_count = crsr.rowcount
-        print(row_count)
 
         placeholder = st.empty()
 
         crsr.execute("SELECT COUNT(*) FROM realtimetest")
         total = crsr.fetchall()
 
+        tweet_list = []
         total_score = 0
         i = 0
         o = (int(makeitastring(total[0])))
         o = o - 10
         t = 1
+        w = 0
         while i < 1:
             crsr.execute(
                 "SELECT tweet_score FROM realtimetest ORDER BY tweet_created_at OFFSET "
@@ -312,6 +312,18 @@ def app():
                 + " ROWS FETCH NEXT 1 ROWS ONLY"
             )
             results = crsr.fetchall()
+            crsr.execute(
+                "SELECT tweet_text FROM realtimetest ORDER BY tweet_created_at OFFSET "
+                + str(o)
+                + " ROWS FETCH NEXT 1 ROWS ONLY"
+            )
+            results2 = crsr.fetchall()
+            tweet_list.append(results2[0])
+            data = makeitastring(tweet_list)
+
+            if w == 50:
+                w = 0
+                tweet_list[40:50]
 
             score = results[0]
             score = makeitastring((score))
@@ -319,6 +331,7 @@ def app():
             total_score = total_score + score
 
             with placeholder.container():
+
                 # create three columns
 
                 # fill in those three columns with respective metrics or KPIs
@@ -328,14 +341,78 @@ def app():
                 st.metric(
                     label="Number of Tweets mentioning Trump since you started watching.", value=t)
 
+                st.set_option('deprecation.showPyplotGlobalUse', False)
+
+                st.write(results2[0])
+                cloud = WordCloud(
+                    scale=3,
+                    max_words=150,
+                    colormap="RdYlGn",
+                    background_color="black",
+                    stopwords=STOPWORDS,
+                    collocations=True,
+                ).generate_from_text(data)
+                plt.figure(figsize=(10, 8))
+                plt.imshow(cloud)
+                plt.axis("off")
+                st.pyplot()
+
+                w = w + 1
                 i = 0
                 o = o + 1
                 t = t+1
-            # time.sleep(.3)
 
-            # total_score = total_score + float(results)
+    elif page == "Real time WordCloud":
+        row_count = crsr.rowcount
 
-        #row_count = crsr.rowcount
+        placeholder = st.empty()
+
+        crsr.execute("SELECT COUNT(*) FROM realtimetest")
+        total = crsr.fetchall()
+
+        tweet_list = []
+        total_score = 0
+        i = 0
+        o = (int(makeitastring(total[0])))
+        o = o - 10
+        t = 1
+        w = 0
+        while i < 1:
+            crsr.execute(
+                "SELECT tweet_text FROM realtimetest ORDER BY tweet_created_at OFFSET "
+                + str(o)
+                + " ROWS FETCH NEXT 1 ROWS ONLY"
+            )
+
+            results2 = crsr.fetchall()
+            tweet_text = results2[0]
+            tweet_text = makeitastring(tweet_text)
+            tweet_text = clean_text(tweet_text)
+            tweet_list.append(tweet_text)
+            data = makeitastring(tweet_list)
+
+            if w == 50:
+                w = 0
+                tweet_list[40:50]
+
+            with placeholder.container():
+                cloud = WordCloud(
+                    scale=3,
+                    max_words=150,
+                    colormap="RdYlGn",
+                    background_color="black",
+                    stopwords=STOPWORDS,
+                    collocations=True,
+                ).generate_from_text(data)
+                plt.figure(figsize=(10, 8))
+                plt.imshow(cloud)
+                plt.axis("off")
+                st.pyplot()
+
+                w = w + 1
+                i = 0
+                o = o + 1
+                t = t+1
 
 
 if __name__ == "__main__":
