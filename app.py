@@ -90,7 +90,11 @@ def app():
         "'moleg",
         "rt '",
         "rt'",
-        "moleg'",
+        "moleg'"
+        "amp",
+        "a",
+        "b",
+
     ]
 
     STOPWORDS.update(morewords)
