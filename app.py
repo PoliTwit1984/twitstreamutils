@@ -132,7 +132,7 @@ def app():
 
     cnxn: pyodbc.Connection = pyodbc.connect(connection_string)
     crsr: pyodbc.Cursor = cnxn.cursor()
-    #crsr.execute('SELECT * FROM table_name')
+    # crsr.execute('SELECT * FROM table_name')
 
     df = pd.read_sql_query('SELECT * FROM TWEET_ALL_UP', cnxn)
 
@@ -294,6 +294,7 @@ def app():
         ).interactive()
 
     elif page == "Real time Trump Sentiment":
+         st.header("Real time Biden Sentiment")
 
         crsr.execute("SELECT COUNT(*) FROM realtimetest")
         total = crsr.fetchall()
