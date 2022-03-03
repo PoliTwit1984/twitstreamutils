@@ -104,7 +104,7 @@ def app():
     stopwords_ls = [clean_text(word) for word in stopwords_ls]
     st.sidebar.title("Politwit1984 Twitter Tools")
     page = st.sidebar.selectbox(
-        "Select Tool", ["Twitter User Information", "Twitter User Wordcloud", "Twitter User Liked Posts WordCloud", "Twitter Lists a User Belongs", "Twitter database tools", "Real time Trump Sentiment", "Real time WordCloud"])
+        "Select Tool", ["Twitter User Information", "Twitter User Wordcloud", "Twitter User Liked Posts WordCloud", "Twitter Lists a User Belongs", "Twitter database tools", "Real time Biden Sentiment", "Real time WordCloud"])
     st.title("Politwit1984 Twitter Analytic Tools")
 
     driver = "{ODBC Driver 17 for SQL Server}"
@@ -295,7 +295,10 @@ def app():
             y='tweet_user_followers_count', scale=alt.Scale(domain=(100, 1000)),
         ).interactive()
 
-    elif page == "Real time Trump Sentiment":
+        k = df.tweet_sentiment_label.value_counts().plot(
+            kind="bar", color="plum", figsize=(10, 3), colormap="pastel")
+
+    elif page == "Real time Biden Sentiment":
         st.header("Real time Biden Sentiment")
         crsr.execute("SELECT COUNT(*) FROM realtimetest")
         total = crsr.fetchall()
