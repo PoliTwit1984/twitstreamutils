@@ -14,8 +14,8 @@ import altair as alt
 import textwrap
 
 #
-nltk.download("stopwords")
-nltk.download("punkt")
+# nltk.download("stopwords")
+# nltk.download("punkt")
 
 
 def clean_text(text):
@@ -55,9 +55,6 @@ client2 = tweepy.Client(bearer_token=st.secrets["bearer_token"])
 
 password = st.secrets["password"]
 username = st.secrets["username"]
-
-
-tweet_list = []
 
 
 def app():
@@ -104,7 +101,7 @@ def app():
     stopwords_ls = [clean_text(word) for word in stopwords_ls]
     st.sidebar.title("Politwit1984 Twitter Tools")
     page = st.sidebar.selectbox(
-        "Select Tool", ["Twitter User Information", "Twitter User Wordcloud", "Twitter User Liked Posts WordCloud", "Twitter Lists a User Belongs", "Twitter database tools", "Real time Biden Sentiment", "Real time WordCloud"])
+        "Select Tool", ["Twitter User Information", "Twitter User Wordcloud", "Twitter User Liked Posts WordCloud", "Twitter Lists a User Belongs", "Twitter database tests", "Real time Biden Sentiment", "Real time WordCloud", "St. Louis Twitter Trends"])
     st.title("Politwit1984 Twitter Analytic Tools")
 
     driver = "{ODBC Driver 17 for SQL Server}"
@@ -159,12 +156,15 @@ def app():
             st.write("User list memberships: ", user.listed_count)
 
     elif page == "Twitter User Wordcloud":
+        tweet_list = []
         st.header("Twitter Utilities - Get User Wordcloud")
         twitter_name = st.text_input(
             "Enter Twitter screen name to get wordcloud of user's recent posts")
         if twitter_name:
             tweets = api.user_timeline(screen_name=twitter_name)
+
             for tweet in tweets:
+                st.write(tweet.text)
                 tweet_clean_text = clean_text(tweet.text)
                 words = word_tokenize(tweet_clean_text)
                 wordsFiltered = []
@@ -177,7 +177,7 @@ def app():
             st.set_option('deprecation.showPyplotGlobalUse', False)
             cloud = WordCloud(
                 scale=3,
-                max_words=150,
+                max_words=100,
                 colormap="RdYlGn",
                 background_color="black",
                 stopwords=STOPWORDS,
@@ -208,7 +208,7 @@ def app():
 
                 tweet_text = tweet.text
 
-                tweet_clean_text = clean_text(tweet.text)
+                tweet_clean_text = clean_text(tweet_text)
                 tweet_created_at = tweet.created_at
                 liked_tweets.append(tweet_clean_text)
 
@@ -239,7 +239,7 @@ def app():
             for x in response.data:
                 st.write(x.name, ('https://twitter.com/i/lists/'+str(x.id)))
 
-    elif page == "Twitter database tools":
+    elif page == "Twitter database tests":
         st.header("Twitter database analysis")
 
         st.bar_chart(df['tweet_source'].value_counts(),
@@ -289,14 +289,9 @@ def app():
 
         st.altair_chart(g, use_container_width=True)
 
-        h = alt.Chart(df).mark_circle(size=60).encode(
-            x=alt.Y('tweet_retweet_count', scale=alt.Scale(
-                type='log', base=10, domain=(100, 1000))),
-            y='tweet_user_followers_count', scale=alt.Scale(domain=(100, 1000)),
-        ).interactive()
-
         k = df.tweet_sentiment_label.value_counts().plot(
             kind="bar", color="plum", figsize=(10, 3), colormap="pastel")
+        st.altair_chart(k, use_container_width=True)
 
     elif page == "Real time Biden Sentiment":
         st.header("Real time Biden Sentiment")
@@ -383,7 +378,13 @@ def app():
                 w = w + 1
                 i = 0
                 o = o + 1
-                t = t+1
+                t = t + 1
+    elif page == "St. Louis Twitter Trends":
+        trends = api.get_place_trends(id="23424977")
+        for value in trends:
+            for trend in value['trends']:
+                st.write(trend['name'] + " has tweet volume of: " +
+                         str(trend['tweet_volume']))
 
 
 if __name__ == "__main__":
