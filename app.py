@@ -14,8 +14,8 @@ import altair as alt
 import textwrap
 
 #
-# nltk.download("stopwords")
-# nltk.download("punkt")
+nltk.download("stopwords")
+nltk.download("punkt")
 
 
 def clean_text(text):
@@ -93,7 +93,7 @@ def app():
         "b",
         "s",
         "t",
-        "z"
+        "z",
 
     ]
 
